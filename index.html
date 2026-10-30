@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Review</title>
+<!-- 手机桌面图标和 App 名称 -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Review">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="theme-color" content="#000000">
+<style>
+  html, body { margin: 0; height: 100%; background: #111111; color: #f2f2f2;
+    font-family: -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif; }
+  /* 平台本身放在 Google 上，这里只是一个外框：整页都是平台 */
+  #app { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; background: #111111; }
+  /* 平台还没加载好时的画面 */
+  #splash { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+    background: #111111; transition: opacity .3s; }
+  #splash img { width: 180px; height: auto; }
+  #splash .bar { width: 120px; height: 4px; border-radius: 2px; background: #2a2a2a; overflow: hidden; }
+  #splash .bar i { display: block; width: 40%; height: 100%; background: #fa6400; animation: go 1s ease-in-out infinite; }
+  @keyframes go { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+  #splash.off { opacity: 0; pointer-events: none; }
+  #offline { display: none; font-size: 15px; color: #bdbdbd; text-align: center; padding: 0 24px; }
+</style>
+</head>
+<body>
+<div id="splash">
+  <img src="logo.png" alt="Gemilang Groceries Freshmart">
+  <div class="bar"><i></i></div>
+  <div id="offline">没有网络，请连上网络再打开<br>Tiada internet · No internet</div>
+</div>
+<iframe id="app" title="绩效评估" allow="clipboard-write"
+  src="https://script.google.com/macros/s/AKfycbwRZ1sPS-fzlstiSi72b23huu5hsyZf58EUOhl8SXAjxDgboFDQdkdjHwTg8wSeO9vvHA/exec"></iframe>
+<script>
+  var splash = document.getElementById('splash');
+  document.getElementById('app').addEventListener('load', function () { setTimeout(function () { splash.classList.add('off'); }, 400); });
+  if (!navigator.onLine) document.getElementById('offline').style.display = 'block';
+  // 有了它 Android 才会出现"安装应用"
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function () {});
+</script>
+</body>
+</html>
